@@ -2,6 +2,7 @@ import { faker } from '@faker-js/faker';
 import { expect } from '@playwright/test';
 import { test } from 'fixtures';
 import User from 'api/requests/User';
+import { createUserSchema } from 'api/schemas/User.schema';
 
 test.describe('User API', () => {
 
@@ -38,6 +39,9 @@ test.describe('User API', () => {
         expect(getUserResponseJson.password).toBe(data.password);
         expect(getUserResponseJson.phone).toBe(data.phone);
         expect(getUserResponseJson.userStatus).toBe(data.userStatus);
+
+        // Schema validation
+        expect(() => createUserSchema.parse(createUserResponseJson)).not.toThrow();
     });
 
     test('successfully updates a user', async ({ createUser, request }) => {
